@@ -11,7 +11,7 @@ import { STELE_ADDRESS } from './constants'
 import { getInvestorID } from './investor'
 
 export function steleSnapshot(event: ethereum.Event): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (!stele) return 
 
   let timestamp = event.block.timestamp.toI32()

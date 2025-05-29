@@ -55,7 +55,7 @@ function fetchTokenSymbol(tokenAddress: Bytes): string {
 }
 
 export function handleSteleCreated(event: SteleCreatedEvent): void {
-  let stele = new Stele(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = new Stele(Bytes.fromI32(0))
   stele.owner = event.params.owner
   stele.usdToken = event.params.usdToken
   stele.rewardRatio = event.params.rewardRatio
@@ -67,8 +67,8 @@ export function handleSteleCreated(event: SteleCreatedEvent): void {
   stele.totalRewardUSD = BigDecimal.fromString("0")
   stele.save()
 
-  let activeChallenges = new ActiveChallenges(Bytes.fromHexString(STELE_ADDRESS))
-  activeChallenges.id = Bytes.fromHexString(STELE_ADDRESS)
+  let activeChallenges = new ActiveChallenges(Bytes.fromI32(0))
+  activeChallenges.id = Bytes.fromI32(0)
   activeChallenges.one_week_id = "0"
   activeChallenges.one_week_startTime = BigInt.fromI32(0)
   activeChallenges.one_week_investorCounter = BigInt.fromI32(0)
@@ -130,7 +130,7 @@ export function handleRemoveToken(event: RemoveTokenEvent): void {
 }
 
 export function handleRewardRatio(event: RewardRatioEvent): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele != null) {
     stele.rewardRatio = event.params.newRewardRatio
     stele.save()
@@ -138,7 +138,7 @@ export function handleRewardRatio(event: RewardRatioEvent): void {
 }
 
 export function handleSeedMoney(event: SeedMoneyEvent): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele != null) {
     stele.seedMoney = event.params.newSeedMoney
     stele.save()
@@ -146,7 +146,7 @@ export function handleSeedMoney(event: SeedMoneyEvent): void {
 }
 
 export function handleEntryFee(event: EntryFeeEvent): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele != null) {
     stele.entryFee = event.params.newEntryFee
     stele.save()
@@ -154,7 +154,7 @@ export function handleEntryFee(event: EntryFeeEvent): void {
 }
 
 export function handleMaxAssets(event: MaxAssetsEvent): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele != null) {
     stele.maxAssets = event.params.newMaxAssets
     stele.save()
@@ -164,7 +164,7 @@ export function handleMaxAssets(event: MaxAssetsEvent): void {
 export function handleOwnershipTransferred(
   event: OwnershipTransferredEvent
 ): void {
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele != null) {
     stele.owner = event.params.newOwner
     stele.save()
@@ -184,7 +184,7 @@ export function handleCreate(event: CreateEvent): void {
   let dayID = timestamp / 86400 // rounded
   
   // create stele snapshot
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele == null) {
     log.debug('[CREATE] Stele not found, Stele : {}', [STELE_ADDRESS])
     return
@@ -215,7 +215,7 @@ export function handleCreate(event: CreateEvent): void {
   // Use the challengeSnapshot helper function instead of duplicating logic
   challengeSnapshot(event.params.challengeId.toString(), event)
 
-  let activeChallenges = ActiveChallenges.load(Bytes.fromHexString(STELE_ADDRESS))
+  let activeChallenges = ActiveChallenges.load(Bytes.fromI32(0))
   if (activeChallenges == null) {
     log.debug('[CREATE] ActiveChallenges not found, ChallengeId : {}', [event.params.challengeId.toString()])
     return
@@ -273,7 +273,7 @@ export function handleJoin(event: JoinEvent): void {
   join.save()
 
   // Update Stele and create SteleSnapshot
-  let stele = Stele.load(Bytes.fromHexString(STELE_ADDRESS))
+  let stele = Stele.load(Bytes.fromI32(0))
   if (stele == null) {
     log.debug('[JOIN] Stele not found, Stele : {}', [STELE_ADDRESS])
     return
@@ -319,7 +319,7 @@ export function handleJoin(event: JoinEvent): void {
 
   investorSnapshot(event.params.challengeId, event.params.user, event)
 
-  let activeChallenges = ActiveChallenges.load(Bytes.fromHexString(STELE_ADDRESS))
+  let activeChallenges = ActiveChallenges.load(Bytes.fromI32(0))
   if (activeChallenges == null) {
     log.debug('[JOIN] ActiveChallenges not found, ChallengeId : {}', [event.params.challengeId.toString()])
     return
@@ -443,7 +443,7 @@ export function handleReward(event: RewardEvent): void {
   reward.transactionHash = event.transaction.hash
   reward.save()
 
-  let activeChallenges = ActiveChallenges.load(Bytes.fromHexString(STELE_ADDRESS))
+  let activeChallenges = ActiveChallenges.load(Bytes.fromI32(0))
   if (activeChallenges == null) {
     log.debug('[REWARD] ActiveChallenges not found, ChallengeId : {}', [event.params.challengeId.toString()])
     return
